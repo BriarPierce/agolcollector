@@ -1,23 +1,100 @@
 <!DOCTYPE html>
-<html>
+ <html>
   <head>
+
+
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Data Collector for AGOL</title>
-    <style>
-      html, body, #viewDiv { height: 100%; width: 100%; margin: 0; padding: 0; }
-    </style>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
-    <script src="https://js.arcgis.com/4.26/"></script>
-    <script>
-      require(["esri/Config", "esri/Map", "esri/views/MapView"], (esriConfig, Map, MapView) => {
-        esriConfig.apiKey = "AAPK0aee94b5d3fa4c61aef2f6d673b63373r6ZylQKkEbWdEmmxojG-k71cUosjAIB5Xe3c8UbDfw0HC6OxRxrargG4xciHm75i";
-        const map = new Map({ basemap: "satellite" });
-        new MapView({ container: "viewDiv", map: map });
-      });
-    </script>
+
+   <title>Data Collector for AGOL</title>
+   <style>
+    html,
+    body,
+    #viewDiv {
+     padding: 0;
+     margin: 0;
+     height: 100%;
+     width: 100%;
+     .addRecordBtn {
+  position: absolute;
+  z-index: 10;
+  top: 10px;
+  right: 10px;
+  background-color: #0079c1;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.addRecordBtn:hover {
+  background-color: #005a87;
+}
+    }
+   </style>
+
+
+
+
+
+   <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
+
+   <script src="https://js.arcgis.com/4.26/"></script>
+
+
+
+   <script>
+    require(["esri/config",
+     "esri/Map", 
+     "esri/views/MapView",
+     "esri/widgets/Locate", 
+     "esri/widgets/Search",
+    "esri/layers/FeatureLayer"], 
+(esriConfig, Map, MapView, Locate, Search, FeatureLayer) => {
+    esriConfig.apiKey = "AAPK0aee94b5d3fa4c61aef2f6d673b63373r6ZylQKkEbWdEmmxojG-k71cUosjAIB5Xe3c8UbDfw0HC6OxRxrargG4xciHm75i";
+
+    const map = new Map({
+        basemap: "satellite"
+    });
+
+    const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-82.37009969111162, 36.30004724355468], 
+        zoom: 6 
+    });
+
+    const locateBtn = new Locate({
+        view: view
+    });
+
+    view.ui.add(locateBtn, {
+        position: "top-left"
+    });
+
+    const searchWidget = new Search({
+        view: view,
+        source:[]
+    });
+
+    view.ui.add(searchWidget, {
+        position: "bottom-right"
+    });
+
+    const layer = new FeatureLayer({
+        url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_49764e31bee643e3b830f2e4061081ab_results/FeatureServer"
+    });
+
+    map.add(layer);
+});
+</script>
+
   </head>
   <body>
+    <a href="https://arcg.is/1PH9b2"target="_blank" class="addRecordBtn">Add Record</a>
     <div id="viewDiv"></div>
   </body>
 </html>
